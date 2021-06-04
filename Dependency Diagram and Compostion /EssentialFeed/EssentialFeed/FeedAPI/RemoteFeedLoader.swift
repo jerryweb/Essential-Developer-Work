@@ -19,6 +19,7 @@ public final class RemoteFeedLoader {
     
     public enum Error: Swift.Error {
         case connectivity
+        case booty
     }
 
     public init(url: URL, client: HTTPClient) {
