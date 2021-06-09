@@ -57,8 +57,8 @@ class RemoteFeedLoaderTests: XCTestCase {
                 var capturedResults = [RemoteFeedLoader.Result]()
                 
                 sut.load { capturedResults.append($0) }
-                
-                client.complete(withStatusCode: code, at: index)
+                let json = makeItemsJSON([])
+                client.complete(withStatusCode: code, data: json, at: index)
             }
         })
     }
@@ -92,12 +92,11 @@ class RemoteFeedLoaderTests: XCTestCase {
                              description: "description",
                              location: "location",
                              imageUrl: URL(string: "https://another-url.com")!)
-        let itemsJSON = ["items": [item1.json, item2.json]
-    ]
+        
         let items = [item1.model, item2.model]
         
         expect(sut, toCompleteWith: .success(items), when: {
-            let json = try!  JSONSerialization.data(withJSONObject: itemsJSON)
+            let json = makeItemsJSON([item1.json, item2.json])
             client.complete(withStatusCode: 200, data: json)
         })
     }
@@ -131,6 +130,11 @@ class RemoteFeedLoaderTests: XCTestCase {
         return (item, itemJSON)
     }
     
+    private func makeItemsJSON(_ items: [[String: Any]]) -> Data {
+        let json = ["items": items]
+        return try!  JSONSerialization.data(withJSONObject: json)
+    }
+    
     private func expect(_ sut: RemoteFeedLoader, toCompleteWith result: RemoteFeedLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
         var capturedResults = [RemoteFeedLoader.Result]()
         
@@ -157,7 +161,7 @@ class RemoteFeedLoaderTests: XCTestCase {
             messages[index].completion(.failure(error))
         }
         
-        func complete(withStatusCode code: Int, data: Data = Data(), at index: Int = 0) {
+        func complete(withStatusCode code: Int, data: Data, at index: Int = 0) {
             let response = HTTPURLResponse(url: requestedURLs[index],
                                            statusCode: code,
                                            httpVersion: nil,
