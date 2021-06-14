@@ -37,7 +37,6 @@ public final class RemoteFeedLoader {
                     } else {
                         completion(.failure(.invalidData))
                     }
-
                 case .failure:
                     completion(.failure(.connectivity))
             }
