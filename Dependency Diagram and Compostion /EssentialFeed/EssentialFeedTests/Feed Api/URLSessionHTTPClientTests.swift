@@ -62,7 +62,7 @@ class URLSessionHTTPClientTests: XCTestCase {
     
     func test_getFromURL_failsOnRequestError() {
         
-        let requestError = anyError()
+        let requestError = anyNSError()
         let receivedError = resultErrorFor(data: nil, response: nil, error: requestError) as NSError?
         
         XCTAssertEqual(receivedError?.domain, requestError.domain)
@@ -75,10 +75,10 @@ class URLSessionHTTPClientTests: XCTestCase {
     }
     
     func test_getFromURL_failsOnAllInvalidRepresentationCases(){
-        let anyData = Data("any data".utf8)
-        let nonHTTPURLResponse = URLResponse(url: anyURL(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
-        let anyHTTPURLResponse = HTTPURLResponse(url: anyURL(), statusCode: 200, httpVersion: nil, headerFields: nil)
-        let requestError = anyError()
+        let anyData = anyData()
+        let nonHTTPURLResponse = nonHTTPURLResponse()
+        let anyHTTPURLResponse = anyHTTPURLResponse()
+        let requestError = anyNSError()
         
         XCTAssertNotNil(resultErrorFor(data: nil, response: nil, error: nil))
         XCTAssertNotNil(resultErrorFor(data: nil, response: nonHTTPURLResponse, error: nil))
@@ -121,12 +121,24 @@ class URLSessionHTTPClientTests: XCTestCase {
         return recievedError
     }
     
-    private func anyError() -> NSError {
+    private func anyData() -> Data {
+        Data("any data".utf8)
+    }
+    
+    private func anyNSError() -> NSError {
         NSError(domain: "any error", code: 0)
     }
     
     private func anyURL() -> URL {
         return URL(string: "http://any-url.com")!
+    }
+    
+    private func nonHTTPURLResponse() -> URLResponse {
+        return URLResponse(url: anyURL(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
+    }
+    
+    private func anyHTTPURLResponse() -> HTTPURLResponse {
+        return HTTPURLResponse(url: anyURL(), statusCode: 200, httpVersion: nil, headerFields: nil)!
     }
     
     private class URLProtocolStub: URLProtocol {
