@@ -49,7 +49,8 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
             exp.fulfill()
         }
         
-        wait(for: [exp], timeout: 5.0)
+        // setting this to 10 seconds from 5 seconds since the request result fulfillment takes around 9.5 seconds when thread sanitization is activated
+        wait(for: [exp], timeout: 15.0)
         return receivedResult
     }
     
