@@ -61,6 +61,17 @@
                BlueprintName = "EssentialFeedTests"
                ReferencedContainer = "container:EssentialFeed.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "EssentialFeedTests">
+               </Test>
+               <Test
+                  Identifier = "EssentialFeedTests/testExample()">
+               </Test>
+               <Test
+                  Identifier = "EssentialFeedTests/testPerformanceExample()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
