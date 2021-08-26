@@ -66,3 +66,14 @@ let vc3 = FeedViewController()
 vc3.loader = RemoteWithLocalFallbackFeedLoader(
                                 remote: RemoteFeedLoader(),
 local: LocalFeedLoader())
+
+
+
+var dict = [Int: (Int,Int)]()
+
+dict[4] = (1,2)
+for sum in dict.keys {
+    if dict.contains(where: <#T##((key: Int, value: (Int, Int))) throws -> Bool#>)
+    print(sum)
+}
+
