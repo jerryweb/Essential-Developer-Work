@@ -142,11 +142,11 @@ class URLSessionHTTPClientTests: XCTestCase {
         let result = resultFor(data: data, response: response, error: error)
  
         switch result {
-        case let .failure(error):
-            return error
-        default:
-            XCTFail("Expected failure, got \(result) instead", file: file, line:  line)
-            return nil
+            case let .failure(error):
+                return error
+            default:
+                XCTFail("Expected failure, got \(result) instead", file: file, line:  line)
+                return nil
         }
     }
     

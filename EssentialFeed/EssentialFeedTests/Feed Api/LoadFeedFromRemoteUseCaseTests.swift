@@ -67,7 +67,8 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         let (sut, client) = makeSUT()
                 
         expect(sut, toCompleteWith: failure(RemoteFeedLoader.Error.invalidData), when: {
-            let invalidJSON = Data(bytes: "invalid json".utf8)
+            let invalidJSON = Data("invalid json".utf8)
+            print(invalidJSON)
             client.complete(withStatusCode: 200, data: invalidJSON)
         })
     }
@@ -77,7 +78,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         let (sut, client) = makeSUT()
 
         expect(sut, toCompleteWith: .success([]), when: {
-            let emptyListJSON = Data(bytes: "{\"items\": []}".utf8)
+            let emptyListJSON = Data("{\"items\": []}".utf8)
             client.complete(withStatusCode: 200, data: emptyListJSON)
         })
     }
@@ -144,7 +145,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
             "location": item.location,
             "image": item.imageUrl.absoluteString
         ].compactMapValues { $0 }
-        
+        print(itemJSON)
         return (item, itemJSON)
     }
     
@@ -156,7 +157,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     private func expect(_ sut: RemoteFeedLoader, toCompleteWith expectedResult: RemoteFeedLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
         
         let exp = expectation(description: "Wait for load completion")
-        
+    
         sut.load { recievedResult in
             switch (recievedResult, expectedResult){
                 case let (.success(recievedItems), .success(expectedItems)):
